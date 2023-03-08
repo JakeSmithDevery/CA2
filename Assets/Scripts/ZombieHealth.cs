@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class ZombieHealth : ObjectHealth
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject ZombieRemains;
+    public GameObject ZombieExplosion;
+
+
+
+    public override void HandleCollision(GameObject otherObject)
     {
-        
+        if (otherObject.CompareTag("Bullet"))
+        {
+            Bullet b = otherObject.GetComponent<Bullet>();
+            SubtractHealth(b.Damage);
+        }
+        base.HandleCollision(otherObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void OnDeath()
     {
-        
+        Instantiate(ZombieRemains, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+        base.OnDeath();
     }
 }
